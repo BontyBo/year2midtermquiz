@@ -3,7 +3,7 @@ from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Question, Choice
-
+#endquiz
 # Create your views here.
 def index(request):
     questions = Question.objects.order_by("pk")[:5]
