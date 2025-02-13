@@ -1,0 +1,8 @@
+{% if questions %}
+    <ul>
+    {% for question in questions %}
+        <li><a href="{% url 'polls:questionpage' question.pk %}">{{ question.question_text }}</a></li>    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
