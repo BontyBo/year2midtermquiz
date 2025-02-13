@@ -7,5 +7,5 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("<int:pk>/", views.questionpage, name="questionpage"),
     path("<int:question_pk>/vote", views.vote, name="vote"),
-    path("<int:pk>/results", views.result, name="results"),
+    path("<int:question_pk>/results", views.result, name="results"),
 ]

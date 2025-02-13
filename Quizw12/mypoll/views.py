@@ -32,5 +32,6 @@ def vote(request, question_pk):
         selected_choice.save()
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))  
 
-def result(request):
-    pass
+def result(request, question_pk):
+    question = Question.objects.get(pk=question_pk)
+    return render(request, "results.html", {"question": question})
