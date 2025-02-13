@@ -8,7 +8,8 @@ def index(request):
     return render(request, "index.html", {"questions" : questions})
 
 def questionpage(request,pk):
-    return HttpResponse(pk)
+    question = Question.objects.get(pk=pk)
+    return render(request, 'questionpage.html', {"question" : question})
 
 def vote(request):
     pass
