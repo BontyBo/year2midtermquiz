@@ -6,7 +6,10 @@ from mypoll.models import Question, Choice
 import time
 
 class testPoll(LiveServerTestCase):
-    #run with --keepdb
+    fixtures=[
+        'mypoll/fixtures/mypollquestions.json',
+        'mypoll/fixtures/mypollchoices.json']
+    
     def setUp(self):
         self.browser = webdriver.Chrome()
         #question = Question.objects.create(question_text="Subject")
