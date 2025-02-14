@@ -1,0 +1,1 @@
+[{"model": "mypoll.choice", "pk": 1, "fields": {"question": 1, "choice_text": "math", "votes": 0}}, {"model": "mypoll.choice", "pk": 2, "fields": {"question": 1, "choice_text": "science", "votes": 0}}, {"model": "mypoll.choice", "pk": 3, "fields": {"question": 1, "choice_text": "english", "votes": 0}}]

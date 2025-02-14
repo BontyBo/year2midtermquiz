@@ -21,7 +21,7 @@ def vote(request, question_pk):
         # Redisplay the question voting form.
         return render(
             request,
-            "polls/detail.html",
+            "questionpage.html",
             {
                 "question": question,
                 "error_message": "You didn't select a choice.",
