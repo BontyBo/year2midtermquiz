@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.http import HttpRequest
 from django.urls import reverse
 from .models import Question, Choice
-from mypoll.views import questionpage,vote
+from mypoll.views import questionpage,vote, get_question_hot_warm
 
 # Create your tests here.
 class testPollPage(TestCase):
@@ -45,3 +45,27 @@ class testPollPage(TestCase):
         context = response.context
         self.assertEqual(context['error_message'], "You didn't select a choice.")
         print("vote nothing show right error message")
+
+class test_get_question(TestCase):
+    def setUp(self):
+        warmquestion = Question.objects.create(question_text="warm question")
+        hotquestion = Question.objects.create(question_text="hot question")
+
+        Choice.objects.create(question=warmquestion, choice_text="Yes, very warm.", votes=7)
+        Choice.objects.create(question=warmquestion, choice_text="No, not very warm.", votes=9)
+        Choice.objects.create(question=hotquestion, choice_text="Yes, Super HOT.", votes=99)
+        Choice.objects.create(question=hotquestion, choice_text="No, Not SO HOT.", votes=77)
+
+    def test_get_warm_question(self):
+        warmquestion = Question.objects.get(question_text="warm question")
+        hotquestion = Question.objects.get(question_text="hot question")
+        question = get_question_hot_warm()["warmquestion"]
+        self.assertIn(warmquestion, question)
+        self.assertNotIn(hotquestion, question)
+
+    def test_get_hot_question(self):
+        warmquestion = Question.objects.get(question_text="warm question")
+        hotquestion = Question.objects.get(question_text="hot question")
+        question = get_question_hot_warm()["hotquestion"]
+        self.assertIn(hotquestion, question)
+        self.assertNotIn(warmquestion, question)
