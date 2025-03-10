@@ -6,8 +6,11 @@ from .models import Question, Choice
 #endquiz
 # Create your views here.
 def index(request):
+    hot_warm_question = get_question_hot_warm()
+    hot_question = hot_warm_question["hotquestion"][:5]
+    warm_question = hot_warm_question["warmquestion"][:5]
     questions = Question.objects.order_by("pk")[:5]
-    return render(request, "index.html", {"questions" : questions})
+    return render(request, "index.html", {"questions" : questions, "hot_question" : hot_question, "warm_question" : warm_question})
 
 def questionpage(request,pk):
     question = Question.objects.get(pk=pk)
@@ -37,7 +40,7 @@ def result(request, question_pk):
     return render(request, "results.html", {"question": question})
 
 def get_question_hot_warm():
-    questions = list(Question.objects.all())
+    questions = list(Question.objects.all()) # when the numbers of question in Question is very large// will filter the latest time first.
     warm_question = []
     hot_question = []
     for question in questions:
@@ -45,9 +48,10 @@ def get_question_hot_warm():
         choices = list(Choice.objects.filter(question=question))
         for choice in choices:
             votes = votes + choice.votes
-            if votes >= 50:
-                hot_question.append(question)
-                break
         if votes >= 10 and votes < 50:
-            warm_question.append(question)
+            warm_question.append((question, votes))
+        elif votes >= 50:
+            hot_question.append((question, votes))
+    warm_question = sorted(warm_question, key=lambda x: x[1])
+    hot_question = sorted(hot_question, key=lambda x: x[1])
     return {"warmquestion" : warm_question, "hotquestion" : hot_question}

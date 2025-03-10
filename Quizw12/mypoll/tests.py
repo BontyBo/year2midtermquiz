@@ -82,7 +82,8 @@ class test_get_question(TestCase):
         
 
         #get warm question and assert each question if it was in get question
-        question = get_question_hot_warm()["warmquestion"]
+        question = get_question_hot_warm()["warmquestion"] # return as list of pair of (question, votes)
+        question = [q[0] for q in question] # get only question objects in each pair
         self.assertIn(warmquestion, question)
         self.assertIn(superwarmquestion, question)
         self.assertIn(boundarywarmquestion, question)
@@ -102,7 +103,8 @@ class test_get_question(TestCase):
         boundaryhotquestion = Question.objects.get(question_text="I have just 50 votes")
 
         #get hot question and assert each question if it was in get question
-        question = get_question_hot_warm()["hotquestion"]
+        question = get_question_hot_warm()["hotquestion"] # return as list of pair of (question, votes)
+        question = [q[0] for q in question] # get only question objects in each pair
         self.assertIn(hotquestion, question)
         self.assertIn(superhotquestion, question)
         self.assertIn(boundaryhotquestion, question)
