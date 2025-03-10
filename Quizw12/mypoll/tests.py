@@ -50,22 +50,46 @@ class test_get_question(TestCase):
     def setUp(self):
         warmquestion = Question.objects.create(question_text="warm question")
         hotquestion = Question.objects.create(question_text="hot question")
+        superwarmquestion = Question.objects.create(question_text="I'm warm question")
+        superhotquestion = Question.objects.create(question_text="I'm very hot question")
+        lonelyquestion = Question.objects.create(question_text="I'm lonely question")
 
         Choice.objects.create(question=warmquestion, choice_text="Yes, very warm.", votes=7)
-        Choice.objects.create(question=warmquestion, choice_text="No, not very warm.", votes=9)
+        Choice.objects.create(question=warmquestion, choice_text="No, not very warm.", votes=4)
         Choice.objects.create(question=hotquestion, choice_text="Yes, Super HOT.", votes=99)
         Choice.objects.create(question=hotquestion, choice_text="No, Not SO HOT.", votes=77)
+
+        Choice.objects.create(question=superhotquestion, choice_text="Super HOT HOT.", votes=7322)
+        Choice.objects.create(question=superwarmquestion, choice_text="So Close", votes=49)
+
+        Choice.objects.create(question=lonelyquestion, choice_text="I'm lonely", votes=2)
 
     def test_get_warm_question(self):
         warmquestion = Question.objects.get(question_text="warm question")
         hotquestion = Question.objects.get(question_text="hot question")
+        superwarmquestion = Question.objects.get(question_text="I'm warm question")
+        superhotquestion = Question.objects.get(question_text="I'm very hot question")
+        lonelyquestion = Question.objects.get(question_text="I'm lonely question")
+
         question = get_question_hot_warm()["warmquestion"]
         self.assertIn(warmquestion, question)
+        self.assertIn(superwarmquestion, question)
         self.assertNotIn(hotquestion, question)
+        self.assertNotIn(superhotquestion, question)
+        self.assertNotIn(lonelyquestion, question)
+        self.assertEqual(len(question), 2)
 
     def test_get_hot_question(self):
         warmquestion = Question.objects.get(question_text="warm question")
         hotquestion = Question.objects.get(question_text="hot question")
+        superwarmquestion = Question.objects.get(question_text="I'm warm question")
+        superhotquestion = Question.objects.get(question_text="I'm very hot question")
+        lonelyquestion = Question.objects.get(question_text="I'm lonely question")
+
         question = get_question_hot_warm()["hotquestion"]
         self.assertIn(hotquestion, question)
+        self.assertIn(superhotquestion, question)
         self.assertNotIn(warmquestion, question)
+        self.assertNotIn(superwarmquestion, question)
+        self.assertNotIn(lonelyquestion, question)
+        self.assertEqual(len(question), 2)
