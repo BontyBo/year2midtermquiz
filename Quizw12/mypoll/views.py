@@ -45,9 +45,9 @@ def get_question_hot_warm():
         choices = list(Choice.objects.filter(question=question))
         for choice in choices:
             votes = votes + choice.votes
-            if votes > 50:
+            if votes >= 50:
                 hot_question.append(question)
                 break
-        if votes > 10 and votes < 50:
+        if votes >= 10 and votes < 50:
             warm_question.append(question)
     return {"warmquestion" : warm_question, "hotquestion" : hot_question}
