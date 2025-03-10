@@ -52,6 +52,6 @@ def get_question_hot_warm():
             warm_question.append((question, votes))
         elif votes >= 50:
             hot_question.append((question, votes))
-    warm_question = sorted(warm_question, key=lambda x: x[1])
-    hot_question = sorted(hot_question, key=lambda x: x[1])
+    warm_question = sorted(warm_question, key=lambda x: x[1], reverse=True)
+    hot_question = sorted(hot_question, key=lambda x: x[1], reverse=True)
     return {"warmquestion" : warm_question, "hotquestion" : hot_question}

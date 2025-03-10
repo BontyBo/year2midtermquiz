@@ -1,6 +1,6 @@
 <h1>Recent Question</h1>
 {% if questions %}
-    <ul>
+    <ul id="recent-question">
     {% for question in questions %}
         <li><a href="{% url 'polls:questionpage' question.pk %}">{{ question.question_text }}</a></li>    {% endfor %}
     </ul>
@@ -9,7 +9,7 @@
 {% endif %}
 <h1>HOT Question</h1>
 {% if hot_question %}
-    <ul>
+    <ul id="hot-question">
     {% for question, votes in hot_question %}
         <li><a href="{% url 'polls:questionpage' question.pk %}">{{ question.question_text }} - {{ votes }} votes</a></li>    {% endfor %}
     </ul>
@@ -18,7 +18,7 @@
 {% endif %}
 <h1>Warm Question</h1>
 {% if warm_question %}
-    <ul>
+    <ul id="warm-question">
     {% for question, votes in warm_question %}
         <li><a href="{% url 'polls:questionpage' question.pk %}">{{ question.question_text }} - {{ votes }} votes</a></li>    {% endfor %}
     </ul>
