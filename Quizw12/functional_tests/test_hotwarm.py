@@ -5,10 +5,10 @@ from mypoll.models import Question, Choice
 
 import time
 
-class testhotwarm(LiveServerTestCase):
+class Test_HotWarm(LiveServerTestCase):
     fixtures=[
-        'hw_choicestest.json',
-        'hw_questiontest.json']
+        'fixtures/hw_choicestest.json',
+        'fixtures/hw_questiontest.json']
     
     def setUp(self):
         self.browser = webdriver.Chrome()
@@ -16,10 +16,11 @@ class testhotwarm(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def vote_hot_warm_question(self):
+    def test_vote_hot_warm_question(self):
         self.browser.get(self.live_server_url)
 
         # ซีเจเข้าเว็บหน้าหลัก เห็น poll ในหัวข้อ recent question, hot question, warm question จำนวน 5, 1, 2 คำถาม
+        time.sleep(2)
         recent_question_list = self.browser.find_element(By.ID, "recent-question")
         recent_link = recent_question_list.find_elements(By.TAG_NAME, "a")
         recent_link_text = [link.text for link in recent_link]
@@ -62,12 +63,15 @@ class testhotwarm(LiveServerTestCase):
         # CJ สนใจคำถาม Am I warm? จึงกดเข้าไปดูเพื่อตอบคำถาม  เขาเลือกคำตอบ Yes, you are
         tobewarm = self.browser.find_element(By.LINK_TEXT, "Am I warm?")
         tobewarm.click()
+        time.sleep(1)
 
         self.browser.find_element(By.ID, "choiceforYes, you are").click()
+        time.sleep(1)
         self.browser.find_element(By.ID, "votebtn").click()
 
         # หน้าจอแสดงผลหน้าจำนวน vote แต่เขาไม่สนใจจึงกลับมาหน้าแรก (เขาต้องการแค่สร้างความแตกต่าง) เขาเห็นว่าตอนนี้คำถามนี้มาอยู่ใน warm question แล้ว
         self.browser.get(self.live_server_url)
+        time.sleep(2)
 
         warm_question_list = self.browser.find_element(By.ID, "warm-question")
         warm_link = warm_question_list.find_elements(By.TAG_NAME, "a")
@@ -87,12 +91,15 @@ class testhotwarm(LiveServerTestCase):
         # เขารู้สึกสนใจในระบบ hot/warm topic มาก หัวข้อต่อไปที่เขาต้องการ vote คือ Am I hot? เขาเลือกคำตอบ Yes, you are hot now.
         tobehot = self.browser.find_element(By.LINK_TEXT, "Am I hot? - 49 votes")
         tobehot.click()
+        time.sleep(1)
 
         self.browser.find_element(By.ID, "choiceforYes, you are hot now.").click()
+        time.sleep(0.5)
         self.browser.find_element(By.ID, "votebtn").click()
 
         # เขาตื่นเต้นมากกับการเปลี่ยนแปลงเป็น hot จึงรีบกลับมาที่หน้าแรกทันที เห็นการย้ายของคำถาม Am I hot? ไปที่ Hot question
         self.browser.get(self.live_server_url)
+        time.sleep(2)
 
         hot_question_list = self.browser.find_element(By.ID, "hot-question")
         hot_link = hot_question_list.find_elements(By.TAG_NAME, "a")
