@@ -9,8 +9,12 @@ def index(request):
     hot_warm_question = get_question_hot_warm()
     hot_question = hot_warm_question["hotquestion"][:5]
     warm_question = hot_warm_question["warmquestion"][:5]
-    questions = Question.objects.order_by("pk")[:5]
+    questions = Question.objects.filter(private=False).order_by("pk")[:5]
     return render(request, "index.html", {"questions" : questions, "hot_question" : hot_question, "warm_question" : warm_question})
+
+def private_menu(request):
+    questions = Question.objects.filter(private=True).order_by("pk")[:5]
+    return render(request, "privateindex.html", {"questions" : questions})
 
 def questionpage(request,pk):
     question = Question.objects.get(pk=pk)
@@ -39,8 +43,8 @@ def result(request, question_pk):
     question = Question.objects.get(pk=question_pk)
     return render(request, "results.html", {"question": question})
 
-def get_question_hot_warm():
-    questions = list(Question.objects.all()) # when the numbers of question in Question is very large// will filter the latest time first.
+def get_question_hot_warm(private=False):
+    questions = list(Question.objects.filter(private=private)) # when the numbers of question in Question is very large// will filter the latest time first.
     warm_question = []
     hot_question = []
     for question in questions:
