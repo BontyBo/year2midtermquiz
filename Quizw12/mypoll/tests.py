@@ -113,3 +113,29 @@ class test_get_question(TestCase):
         self.assertNotIn(lonelyquestion, question)
         self.assertNotIn(boundarywarmquestion, question)
         self.assertEqual(len(question), 3)
+
+    def test_no_private_included(self):
+        # There is no private question for now
+        questions = get_question_hot_warm(privatepage=True)
+        self.assertFalse(questions["warmquestion"])
+        self.assertFalse(questions["hotquestion"]) #test the set of private question is empty
+
+    def test_get_right_private_hot(self):
+        private_hot_question = Question.objects.create(question_text="I'm hot private.", private=True)
+        private_choice = Choice.objects.create(question=private_hot_question, choice_text="Yes, private and hot.", votes=123456)
+        private_warm_question = Question.objects.create(question_text="I'm warm private.", private=True)
+        private_choice = Choice.objects.create(question=private_warm_question, choice_text="Yes, private and warm.", votes=19)
+        questions = [q[0] for q in get_question_hot_warm(privatepage=True)["hotquestion"]]
+        self.assertEqual(len(questions), 1)
+        self.assertIn(private_hot_question, questions)
+        self.assertNotIn(private_warm_question, questions)
+
+    def test_get_right_private_warm(self):
+        private_hot_question = Question.objects.create(question_text="I'm hot private.", private=True)
+        private_choice = Choice.objects.create(question=private_hot_question, choice_text="Yes, private and hot.", votes=123456)
+        private_warm_question = Question.objects.create(question_text="I'm warm private.", private=True)
+        private_choice = Choice.objects.create(question=private_warm_question, choice_text="Yes, private and warm.", votes=19)
+        questions = [q[0] for q in get_question_hot_warm(privatepage=True)["warmquestion"]]
+        self.assertEqual(len(questions), 1)
+        self.assertNotIn(private_hot_question, questions)
+        self.assertIn(private_warm_question, questions)

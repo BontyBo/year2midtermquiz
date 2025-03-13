@@ -43,8 +43,8 @@ def result(request, question_pk):
     question = Question.objects.get(pk=question_pk)
     return render(request, "results.html", {"question": question})
 
-def get_question_hot_warm(private=False):
-    questions = list(Question.objects.filter(private=private)) # when the numbers of question in Question is very large// will filter the latest time first.
+def get_question_hot_warm(privatepage=False):
+    questions = list(Question.objects.filter(private=privatepage)) # when the numbers of question in Question is very large// will filter the latest time first.
     warm_question = []
     hot_question = []
     for question in questions:
