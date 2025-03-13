@@ -1,6 +1,6 @@
 <h1>Private Question</h1>
 {% if questions %}
-    <ul id="recent-question">
+    <ul id="private-question">
     {% for question in questions %}
         <li><a href="{% url 'polls:questionpage' question.pk %}">{{ question.question_text }}</a></li>    {% endfor %}
     </ul>
