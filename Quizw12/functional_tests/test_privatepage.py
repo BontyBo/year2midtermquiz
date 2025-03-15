@@ -31,6 +31,7 @@ class Test_Private_page(LiveServerTestCase):
         self.assertEqual(5, len(recent_link))
         for link_txt in current_recent_link_text:
             self.assertIn(link_txt, recent_link_text)
+        time.sleep(2)
 
         # แต่ว่าเขาเป็นบุคคลพิเศษทำให้เขารู้ว่ามีหน้าลับซ่อนอยู่ ซึ่งก็คือหน้า private เขาเห็นคำถามลับของเรา 3 คำถาม
 
@@ -47,11 +48,14 @@ class Test_Private_page(LiveServerTestCase):
         self.assertEqual(3, len(private_link))
         for link_txt in current_private_link_text:
             self.assertIn(link_txt, private_link_text)
+        time.sleep(2)
 
         # เขาอยากบอกสีที่ชอบให้โลกรู้ เขาเลือกหัวข้อสี แล้วเลือกสีแดงและกด vote
         self.browser.find_element(By.LINK_TEXT, "What is your favorite color?").click()
+        time.sleep(1)
         self.browser.find_element(By.ID, "choiceforred").click()
         self.browser.find_element(By.ID, "votebtn").click()
+        time.sleep(1)
 
         # เขาก็มาที่หน้าแสดงผลลัพธ์ เขาพอใจแล้วกดออก
         self.assertIn("results", self.browser.current_url)
