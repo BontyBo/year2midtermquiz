@@ -9,4 +9,5 @@ urlpatterns = [
     path("<int:pk>/", views.questionpage, name="questionpage"),
     path("<int:question_pk>/vote", views.vote, name="vote"),
     path("<int:question_pk>/results", views.result, name="results"),
+    # path("<str:ownercode/>", views.companypoll, name="companypoll"),
 ]
